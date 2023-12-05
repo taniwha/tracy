@@ -288,7 +288,12 @@ public:
         }
 
 
-        VK_FUNCTION_WRAPPER( vkGetQueryPoolResults( m_device, m_query, wrappedTail, cnt, sizeof( int64_t ) * m_queryCount * 2, m_res, sizeof( int64_t ) * 2, VK_QUERY_RESULT_64_BIT | VK_QUERY_RESULT_WITH_AVAILABILITY_BIT ) );
+        if( VK_FUNCTION_WRAPPER( vkGetQueryPoolResults( m_device, m_query, wrappedTail, cnt, sizeof( int64_t ) * m_queryCount * 2, m_res, sizeof( int64_t ) * 2, VK_QUERY_RESULT_64_BIT | VK_QUERY_RESULT_WITH_AVAILABILITY_BIT ) == VK_NOT_READY ) )
+        {
+			abort();
+            m_oldCnt = cnt;
+            return;
+        }
 
         for( unsigned int idx=0; idx<cnt; idx++ )
         {
@@ -333,6 +338,12 @@ public:
             VK_FUNCTION_WRAPPER( vkResetQueryPool( m_device, m_query, wrappedTail, cnt ) );
 
         m_tail += cnt;
+#if 1
+		if (m_tail == head && m_tail > m_queryCount / 2) {
+			m_tail = 0;
+			m_head.store (0);
+		}
+#endif
     }
 
     tracy_force_inline unsigned int NextQueryId()
