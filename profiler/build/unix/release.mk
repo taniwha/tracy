@@ -1,6 +1,6 @@
 CFLAGS := -O3
 ifndef TRACY_NO_LTO
-CFLAGS += -flto
+CFLAGS += -flto=auto
 endif
 DEFINES := -DNDEBUG
 BUILD := release
