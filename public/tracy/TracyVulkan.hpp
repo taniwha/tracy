@@ -285,6 +285,7 @@ public:
 
         if( VK_FUNCTION_WRAPPER( vkGetQueryPoolResults( m_device, m_query, wrappedTail, cnt, sizeof( int64_t ) * m_queryCount, m_res, sizeof( int64_t ), VK_QUERY_RESULT_64_BIT ) == VK_NOT_READY ) )
         {
+			abort();
             m_oldCnt = cnt;
             return;
         }
@@ -321,6 +322,12 @@ public:
         VK_FUNCTION_WRAPPER( vkCmdResetQueryPool( cmdbuf, m_query, wrappedTail, cnt ) );
 
         m_tail += cnt;
+#if 1
+		if (m_tail == head && m_tail > m_queryCount / 2) {
+			m_tail = 0;
+			m_head.store (0);
+		}
+#endif
     }
 
 private:
