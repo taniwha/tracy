@@ -15,6 +15,10 @@ ___tracy_vkctx_scope *___tracy_vkctx_scope_new_src (___tracy_vkctx *c_ctx, uint3
 
 ___tracy_vkctx_scope *___tracy_vkctx_scope_new_src_depth (___tracy_vkctx *c_ctx, uint32_t line, const char *source, size_t sourceSz, const char *function, size_t functionSz, const char *name, size_t nameSz, VkCommandBuffer cmdbuf, int depth, int is_active);
 
+___tracy_vkctx_scope *___tracy_vkctx_scope_new_src_color (___tracy_vkctx *c_ctx, uint32_t line, const char *source, size_t sourceSz, const char *function, size_t functionSz, const char *name, size_t nameSz, VkCommandBuffer cmdbuf, uint32_t color, int is_active);
+
+___tracy_vkctx_scope *___tracy_vkctx_scope_new_src_color_depth (___tracy_vkctx *c_ctx, uint32_t line, const char *source, size_t sourceSz, const char *function, size_t functionSz, const char *name, size_t nameSz, VkCommandBuffer cmdbuf, uint32_t color, int depth, int is_active);
+
 void ___tracy_vkctx_scope_delete (___tracy_vkctx_scope *c_scope);
 
 #ifdef TRACY_VK_USE_SYMBOL_TABLE
@@ -68,6 +72,7 @@ void ___tracy_vkctx_collect (___tracy_vkctx *c_ctx, VkCommandBuffer cmdbuf);
 #  define TracyCVkZone( ctx, cmdbuf, name ) TracyCVkNamedZone( ctx, ___tracy_gpu_zone, cmdbuf, name, true )
 #  define TracyCVkZoneC( ctx, cmdbuf, name, color ) TracyCVkNamedZoneC( ctx, ___tracy_gpu_zone, cmdbuf, name, color, true )
 #  define TracyCVkZoneTransient( ctx, varname, cmdbuf, name, active ) ___tracy_vkctx_scope *varname = ___tracy_vkctx_scope_new_src( ctx, TracyLine, TracyFile, strlen( TracyFile ), TracyFunction, strlen( TracyFunction ), name, strlen( name ), cmdbuf, active );
+#  define TracyCVkZoneTransientC( ctx, varname, cmdbuf, name, color, active ) ___tracy_vkctx_scope *varname = ___tracy_vkctx_scope_new_src_color( ctx, TracyLine, TracyFile, strlen( TracyFile ), TracyFunction, strlen( TracyFunction ), name, strlen( name ), cmdbuf, color, active );
 #endif
 #define TracyCVkCollect( ctx, cmdbuf ) ___tracy_vkctx_collect( ctx, cmdbuf );
 
@@ -77,6 +82,7 @@ void ___tracy_vkctx_collect (___tracy_vkctx *c_ctx, VkCommandBuffer cmdbuf);
 #  define TracyCVkZoneS( ctx, cmdbuf, name, depth ) TracyCVkNamedZoneS( ctx, ___tracy_gpu_zone, cmdbuf, name, depth, true )
 #  define TracyCVkZoneCS( ctx, cmdbuf, name, color, depth ) TracyCVkNamedZoneCS( ctx, ___tracy_gpu_zone, cmdbuf, name, color, depth, true )
 #  define TracyCVkZoneTransientS( ctx, varname, cmdbuf, name, depth, active ) ___tracy_vkctx_scope *varname = ___tracy_vkctx_scope_new_src_depth( ctx, TracyLine, TracyFile, strlen( TracyFile ), TracyFunction, strlen( TracyFunction ), name, strlen( name ), cmdbuf, depth, active );
+#  define TracyCVkZoneTransientCS( ctx, varname, cmdbuf, name, color, depth, active ) ___tracy_vkctx_scope *varname = ___tracy_vkctx_scope_new_src_color_depth( ctx, TracyLine, TracyFile, strlen( TracyFile ), TracyFunction, strlen( TracyFunction ), name, strlen( name ), cmdbuf, color, depth, active );
 #else
 #  define TracyCVkNamedZoneS( ctx, varname, cmdbuf, name, depth, active ) TracyCVkNamedZone( ctx, varname, cmdbuf, name, active )
 #  define TracyCVkNamedZoneCS( ctx, varname, cmdbuf, name, color, depth, active ) TracyCVkNamedZoneC( ctx, varname, cmdbuf, name, color, active )

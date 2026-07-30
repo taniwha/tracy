@@ -114,6 +114,20 @@ ___tracy_vkctx_scope *___tracy_vkctx_scope_new_src_depth (___tracy_vkctx *c_ctx,
 	return (___tracy_vkctx_scope *) scope;
 }
 
+___tracy_vkctx_scope *___tracy_vkctx_scope_new_src_color (___tracy_vkctx *c_ctx, uint32_t line, const char *source, size_t sourceSz, const char *function, size_t functionSz, const char *name, size_t nameSz, VkCommandBuffer cmdbuf, uint32_t color, int is_active)
+{
+	auto ctx = (tracy::VkCtx *) c_ctx;
+	auto scope = new tracy::VkCtxScope (ctx, line, source, sourceSz, function, functionSz, name, nameSz, cmdbuf, color, is_active);
+	return (___tracy_vkctx_scope *) scope;
+}
+
+___tracy_vkctx_scope *___tracy_vkctx_scope_new_src_color_depth (___tracy_vkctx *c_ctx, uint32_t line, const char *source, size_t sourceSz, const char *function, size_t functionSz, const char *name, size_t nameSz, VkCommandBuffer cmdbuf, uint32_t color, int depth, int is_active)
+{
+	auto ctx = (tracy::VkCtx *) c_ctx;
+	auto scope = new tracy::VkCtxScope (ctx, line, source, sourceSz, function, functionSz, name, nameSz, cmdbuf, color, depth, is_active);
+	return (___tracy_vkctx_scope *) scope;
+}
+
 void ___tracy_vkctx_scope_delete (___tracy_vkctx_scope *c_scope)
 {
 	auto scope = (tracy::VkCtxScope *) c_scope;
